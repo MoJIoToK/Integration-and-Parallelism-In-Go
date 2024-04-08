@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"fmt"
 	"log"
 	"net"
 	"os"
@@ -9,13 +10,13 @@ import (
 
 func main() {
 	//подсоединение к серверу
-	d, err := net.Dial("tcp4", "localhost:8080")
+	d, err := net.Dial("tcp", "localhost:8080")
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	for {
-		text, _, err := bufio.NewReader(os.Stdout).ReadLine()
+		text, err := bufio.NewReader(os.Stdin).ReadString('\n')
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -24,9 +25,11 @@ func main() {
 			log.Fatal(err)
 		}
 
-		uppetText := []byte{}
-		if _, err := d.Read(uppetText); err != nil {
+		text, err = bufio.NewReader(d).ReadString('\n')
+		if err != nil {
 			log.Fatal(err)
 		}
+
+		fmt.Println(string(text))
 	}
 }

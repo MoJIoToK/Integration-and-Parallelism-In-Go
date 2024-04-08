@@ -24,13 +24,12 @@ func main() {
 	}
 
 	for {
-		reader := bufio.NewReader(con)
-		line, _, err := reader.ReadLine()
+		line, err := bufio.NewReader(con).ReadString('\n')
 		if err != nil {
 			log.Fatal(err)
 		}
 
-		fmt.Println("Line received: ", line)
+		fmt.Println("Line: ", string(line))
 
 		upperLine := strings.ToUpper(string(line))
 		if _, err := con.Write([]byte(upperLine)); err != nil {
